@@ -24,7 +24,7 @@ use hal::{
 
 #[entry]
 fn main() -> ! {
-    // Get control of the PC13 pin
+    // Initialize peripherals
     let device_peripherals = pac::Peripherals::take().unwrap();
     let cortex_peripherals = cortex_m::Peripherals::take().unwrap();
 
@@ -32,6 +32,7 @@ fn main() -> ! {
     let mut flash = device_peripherals.FLASH.constrain();
     let clocks = rcc.cfgr.freeze(&mut flash.acr);
 
+    // Initialize the GPIO A and B
     let mut gpioa = device_peripherals.GPIOA.split(&mut rcc.apb2);
     let mut gpiob = device_peripherals.GPIOB.split(&mut rcc.apb2);
 
@@ -60,14 +61,16 @@ fn main() -> ! {
     // Init analog temperature sensor
     let mut tmp36 = gpiob.pb0.into_analog(&mut gpiob.crl);
 
-    // We can only send byte per byte with the serial
+    // Read the TMP36's tension, in bytes
     let data: u16 = adc1.read(&mut tmp36).unwrap();
 
+    // Convert tension in bytes to temperature
     let temperature = scaling(data);
 
     //let mut buffer = itoa::Buffer::new();
     //let printed = buffer.format(data);
 
+    // Format the temperature (a float) and put it in a buffer
     let mut buffer = ryu::Buffer::new();
     let printed = buffer.format(temperature);
 
