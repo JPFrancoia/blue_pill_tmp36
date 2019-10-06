@@ -12,6 +12,10 @@ For the environment setting, see
 
 ## Key points
 
+### Wiring
+
+![](wiring.jpg "")
+
 ### Reading the temperature
 
 ```rust
