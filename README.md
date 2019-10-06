@@ -9,6 +9,8 @@ decided to publish what I got so far.
 For the environment setting, see
 [here](https://github.com/JPFrancoia/bluepill_quick_start).
 
+For the full code, see `src/main.rs`.
+
 
 ## Key points
 
